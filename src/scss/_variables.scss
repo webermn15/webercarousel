@@ -1,0 +1,94 @@
+/* ================================================================
+   Variables
+   ================================================================ */
+
+// Color Variables
+$body-bg: #fff;
+$color-base: #000;
+$color-invert: #fff;
+$color-primary: #225894;
+$color-secondary: #25afd2;
+
+
+// Typography 
+$font-primary: Arial, sans-serif;
+$font-secondary: Tahoma, Geneva, sans-serif;
+$font-heading: $font-secondary;
+ 
+$fontWeight-light: 300;
+$fontWeight-normal: 400;
+$fontWeight-medium: 500;
+$fontWeight-semibold: 600;
+$fontWeight-bold: 700;
+
+$typography-margin-bottom: 1em;
+ 
+
+// Breakpoints 
+// You can convert these at http://pxtoem.com 
+$bp-s: 20em; // 320px 
+$bp-s-max: 29.938em; // 479px
+$bp-sw: 30em; // 480px
+$bp-sw-max: 47.938em; // 767px
+$bp-m: 48em; // 768px  
+$bp-m-max: 59.938em; // 959px
+$bp-mw: 60em; // 960px
+$bp-mw-max: 71.188em; // 1139px 
+$bp-l: 72em; // 1140px
+$bp-l-max: 81.188em; // 1299px 
+$bp-xl: 81.25em; // 1300px 
+
+
+// Navigation Variables
+$nav-transition-speed: 0.4s;
+$nav-barBackground: #333; 
+$nav-mainLinkBackground: #666;  
+$nav-subLinkBackground: #999; 
+  
+
+// Grid
+$grid-gutter: 15px; 
+$grid-gutter-em: 0.938em; // Changing grid gutter to em causes a compiling error :/
+/* ================================================================
+   Variables
+   ================================================================ */
+
+// Color Variables
+$color-base: #333;
+$body-bg: #FFF;
+$body-bg-alt: #F2F2F2;
+$dark-alt: #CCCCCC;
+$primary-color: #0054A5;
+$secondary-color: #ED1844;
+$dark-accent: #003466;
+$medium-accent: #11487E;
+$light-accent: #89BBEE;
+$twitter-color: #00CCFF;
+$facebook-color: #003466;
+$youtube-color: #CC0000;
+$instagram-color: #333;
+
+// Typography 
+$font-primary: Helvetica, sans-serif;
+ 
+$fontWeight-light: 300;
+$fontWeight-normal: 400;
+$fontWeight-medium: 500;
+$fontWeight-semibold: 600;
+$fontWeight-bold: 700;
+
+$typography-margin-bottom: 1em;
+ 
+
+// Breakpoints 
+// You can convert these at http://pxtoem.com 
+$bp-s: 20em; // 320px
+$bp-sw: 30em; // 480px
+$bp-m: 48em; // 768px  
+$bp-mw: 64em; // 1024px
+$bp-l: 80em; // 1280px
+$bp-xl: 100em; // 1600px
+
+
+// Navigation Variables
+$nav-transition-speed: 0.4s;
