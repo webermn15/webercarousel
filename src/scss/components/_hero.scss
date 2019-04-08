@@ -9,6 +9,7 @@
         height: 100%;
         width: 100%;
         // z-index: -999px;
+        transition: 1s all ease-out;
 }
 .hero__bg--scroll {
         position: absolute;
@@ -39,7 +40,7 @@
 .expanded-content__container {
         position: relative;
         color: $body-bg;
-        background-color: rgba(10, 10, 10, 0.2)
+        background-color: rgba(10, 10, 10, 0.2);
 }
 .expanded-content__category {
         font-style: italic;
@@ -47,6 +48,7 @@
 .expanded-content__title {
         text-transform: uppercase;
         font-size: 3.4375rem;
+        padding: 0 1rem;
 }
 .expanded-content__details {
         font-size: 1.5rem;

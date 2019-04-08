@@ -269,6 +269,8 @@ $(document).ready(function() {
         if (Math.abs(scrollAdjust - itemLeftBounds[snapIndex]) <= options.snapMargin) {
             cButtons.removeClass('hero-indicator__button--selected');
             cButtons.eq(snapIndex).addClass('hero-indicator__button--selected');
+            var bgImageUrl = $cElement.children().eq(snapIndex).data('bgimage');
+            $('.hero__bg').css({background: 'url('+bgImageUrl+')', backgroundSize: 'cover'})
         }
         
         /* prevent snapping on full left or right scroll (enabled by default) */
