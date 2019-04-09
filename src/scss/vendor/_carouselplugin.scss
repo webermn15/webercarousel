@@ -1,0 +1,38 @@
+.weber-carousel {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+}
+
+// .weber-carousel__container {
+//         min-width: 100%;
+// }
+
+.weber-carousel__button {
+        border: 2px solid $body-bg-alt;
+        border-radius: 6px;
+        background: none;
+        font-size: 6rem;
+
+        &:hover, &:focus {
+                border-color: $dark-alt;
+                cursor: pointer;
+        }
+}
+.slide__left {
+        position: absolute;
+        top: 6rem;
+        left: -6rem;
+}
+.slide__right {
+        position: absolute;
+        top: 6rem;
+        right: -6rem;
+}
+
+@media (max-width: $bp-l) {
+        .weber-carousel__button {
+                display: none;
+        }
+}
