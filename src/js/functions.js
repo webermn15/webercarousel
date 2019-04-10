@@ -375,7 +375,7 @@ $(document).ready(function() {
     // });
 
 
-
+    $('.weber-carousel__container').weberCarousel();
 
 
     /** Click Navigation **/

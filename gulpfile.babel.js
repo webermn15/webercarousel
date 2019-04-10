@@ -102,7 +102,7 @@ gulp.task('build-css', function() {
 // JS - Concatenate, babel, minify, and rename
 gulp.task('scripts', function() {
     notifyGeneric.s = gsize();
-    return gulp.src(['src/js/plugins.js', 'src/js/functions.js'])
+    return gulp.src(['src/js/plugins.js', 'src/js/functions.js', 'src/js/weber.js'])
         .pipe(plumber({ errorHandler: onError }))
         .pipe(concat('all.js'))
         .pipe(babel({ compact:false }))
