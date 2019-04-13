@@ -364,18 +364,13 @@ $(document).ready(function() {
     });
 
 
-    /* build da plugin here */
-
-    // var WeberCarousel = (function() {
-        
-    //     function WeberCarousel(element, options) {
-    //         var _ = this;
-    //     }
-
-    // });
+    /* da plugin */
 
 
     $('.weber-carousel__container').weberCarousel();
+
+
+
 
 
     /** Click Navigation **/

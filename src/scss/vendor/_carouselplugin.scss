@@ -5,9 +5,13 @@
         align-items: center;
 }
 
-// .weber-carousel__container {
-//         min-width: 100%;
-// }
+.weber-carousel__hero {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+}
+.weber-carousel__hero::-webkit-scrollbar {
+        display: none;
+}
 
 .weber-carousel__button {
         border: 2px solid $body-bg-alt;
