@@ -87,8 +87,40 @@
     		var distanceLeft = $(item).offset().left = _.carouselOffset,
     			distanceRight = distanceLeft + ($(item).width());
 
-    		
+    		/* opacity checker THIS WILL NEED UPDATING */
+    		if (_.options.fadeObscured === true) {
+    			if (distanceLeft <= -1 || distanceRight >= (_.carouselWidth +1)) {
+    				$(item).css('opacity', _.options.fadeOpacity);
+    			}
+    			else {
+    				$(item).css('opacity', 1);
+    			}
+    		}
+
+    		if (_.options.snapAlignment === 'center') {
+    			console.log('center');
+    		}
+    		else if (_.options.snapAlignment === 'left') {
+    			console.log('left');
+    		}
+    		else if (_.options.snapAlignment === 'right') {
+    			console.log('right');
+    		}
     	});
+
+    	/* need to update indicator button checking here */
+
+    	/* prevent all snapping if scroll ends on boundary (enabled by default)*/
+    	if (_.options.preventEdgeSnapping && scrollPosition <= 2 || _.options.preventEdgeSnapping && (scrollPosition + _.carouselWidth) >= (_.carouselWidth - 2)) {
+    		return false;
+    	}
+
+    	/* check against margin for scroll reposition, animate reposition */
+    	if (closestDistance >= _.options.snapMargin) {
+    		_.$carousel.animate({
+    			scrollLeft: scrollAdjust
+    		}, _.options.animationLength);
+    	}
     };
 
     $.fn.weberCarousel = function() {
