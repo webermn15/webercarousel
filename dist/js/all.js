@@ -2049,7 +2049,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                 /*
                 
                 Animating left + top + width/height looks glitchy in Firefox, but perfect in Chrome. And vice-versa.
-                	 */
+                		 */
                 var obj = {
                     width: el.width(),
                     // fix Zepto height+padding issue
@@ -5564,7 +5564,7 @@ $(document).ready(function () {
 });
 (function ($) {
 
-    /* debounce */
+    /* debouncer */
     var debounce = function debounce(func, wait, immediate) {
         var timeout;
         return function () {
@@ -5597,9 +5597,9 @@ $(document).ready(function () {
                 debounce: 200
             };
 
-            var dataObject = $(element).data() || {};
+            var dataObject = $(element).data('webcarousel') || {};
 
-            _.options = $.extend({}, _.defaultOptions, options);
+            _.options = $.extend({}, _.defaultOptions, dataObject, options);
 
             _.carousel = element;
             _.$carousel = $(element);
@@ -5636,7 +5636,7 @@ $(document).ready(function () {
         _.carouselCenter = _.carouselWidth / 2;
         _.carouselOffset = _.$carousel.offset().left;
         _.carouselScrollWidth = _.carousel.scrollWidth;
-        _.childLeftBounds = _.$carouselItems.map(function (_index, child) {
+        _.childrenLeftBounds = _.$carouselItems.map(function (_index, child) {
             return $(child).offset().left + _.$carousel.scrollLeft();
         }).get();
     };
@@ -5649,7 +5649,7 @@ $(document).ready(function () {
             snapIndex;
 
         _.$carouselItems.each(function (_index, item) {
-            var distanceLeft = $(item).offset().left = _.carouselOffset,
+            var distanceLeft = $(item).offset().left - _.carouselOffset,
                 distanceRight = distanceLeft + $(item).width();
 
             /* opacity checker THIS WILL NEED UPDATING */
@@ -5662,26 +5662,147 @@ $(document).ready(function () {
             }
 
             if (_.options.snapAlignment === 'center') {
-                console.log('center');
+                var centerAlignment = _.alignCenter(_index, item, scrollPosition, distanceLeft, closestDistance);
+                if (!!centerAlignment) {
+                    closestDistance = centerAlignment.closestDistance;
+                    scrollAdjust = centerAlignment.scrollAdjust;
+                    snapIndex = centerAlignment.snapIndex;
+                }
             } else if (_.options.snapAlignment === 'left') {
-                console.log('left');
+                var leftAlignment = _.alignLeft(_index, item, scrollPosition, distanceLeft, closestDistance);
+                if (!!leftAlignment) {
+                    console.log(_index, leftAlignment);
+                    closestDistance = leftAlignment.closestDistance;
+                    scrollAdjust = leftAlignment.scrollAdjust;
+                    snapIndex = leftAlignment.snapIndex;
+                }
             } else if (_.options.snapAlignment === 'right') {
-                console.log('right');
+                var rightAlignment = _.alignRight(_index, item, scrollPosition, distanceRight, closestDistance);
+                if (!!rightAlignment) {
+                    closestDistance = rightAlignment.closestDistance;
+                    scrollAdjust = rightAlignment.scrollAdjust;
+                    snapIndex = rightAlignment.snapIndex;
+                }
             }
         });
 
         /* need to update indicator button checking here */
 
         /* prevent all snapping if scroll ends on boundary (enabled by default)*/
-        if (_.options.preventEdgeSnapping && scrollPosition <= 2 || _.options.preventEdgeSnapping && scrollPosition + _.carouselWidth >= _.carouselWidth - 2) {
-            return false;
+        if (!_.buttonDirection) {
+            if (_.options.preventEdgeSnapping && scrollPosition <= 2 || _.options.preventEdgeSnapping && scrollPosition + _.carouselWidth >= _.carouselScrollWidth - 2) {
+                return false;
+            }
         }
+
+        // console.log(_.options);
+        // console.log(closestDistance);
+        // console.log(_.options.snapMargin);
 
         /* check against margin for scroll reposition, animate reposition */
         if (closestDistance >= _.options.snapMargin) {
             _.$carousel.animate({
                 scrollLeft: scrollAdjust
             }, _.options.animationLength);
+        }
+    };
+
+    WeberCarousel.prototype.alignCenter = function (index, item, scrollPosition, distanceLeft, closestDistance, buttonDirection) {
+        var _ = this,
+            distanceCenter = distanceLeft + $(item).width() / 2,
+            relDistanceCenter = _.carouselCenter - distanceCenter,
+            absDistanceCenter = Math.abs(relDistanceCenter);
+
+        if (buttonDirection === 'left') {
+            if (Math.floor(relDistanceCenter) > 0 && (closestDistance === undefined || absDistanceCenter < closestDistance)) {
+                return {
+                    closestDistance: absDistanceCenter,
+                    scrollAdjust: scrollPosition + absDistanceCenter + _.options.snapOffset,
+                    snapIndex: index
+                };
+            }
+        } else if (buttonDirection === 'right') {
+            if (Math.ceil(relDistanceCenter) < 0 && (closestDistance === undefined || absDistanceCenter < closestDistance)) {
+                return {
+                    closestDistance: absDistanceCenter,
+                    scrollAdjust: scrollPosition + absDistanceCenter + _.options.snapOffset,
+                    snapIndex: index
+                };
+            }
+        } else {
+            if (distanceCenter > 0 && distanceCenter <= _.carouselWidth) {
+                if (closestDistance === undefined || closestDistance >= absDistanceCenter) {
+                    return {
+                        closestDistance: absDistanceCenter,
+                        scrollAdjust: scrollPosition - relDistanceCenter + _.options.snapOffset,
+                        snapIndex: index
+                    };
+                }
+            }
+        }
+    };
+
+    WeberCarousel.prototype.alignLeft = function (index, item, scrollPosition, distanceLeft, closestDistance, buttonDirection) {
+        var _ = this,
+            absDistanceLeft = Math.abs(distanceLeft);
+        console.log(absDistanceLeft);
+
+        if (buttonDirection === 'left') {
+            if (Math.ceil(distanceLeft) < 0 && (closestDistance === undefined || absDistanceLeft < closestDistance)) {
+                return {
+                    closestDistance: absDistanceLeft,
+                    scrollAdjust: scrollPosition - absDistanceLeft + _.options.snapOffset,
+                    snapIndex: index
+                };
+            }
+        } else if (buttonDirection === 'right') {
+            if (Math.floor(distanceLeft) > 0 && (closestDistance === undefined || absDistanceLeft < closestDistance)) {
+                return {
+                    closestDistance: absDistanceLeft,
+                    scrollAdjust: scrollPosition + absDistanceLeft + _.options.snapOffset,
+                    snapIndex: index
+                };
+            }
+        } else {
+            if (closestDistance === undefined || closestDistance >= absDistanceLeft) {
+                return {
+                    closestDistance: absDistanceLeft,
+                    scrollAdjust: scrollPosition + distanceLeft + _.options.snapOffset,
+                    snapIndex: index
+                };
+            }
+        }
+    };
+
+    WeberCarousel.prototype.alignRight = function (index, item, scrollPosition, distanceRight, closestDistance, buttonDirection) {
+        var _ = this,
+            relDistanceRight = _.carouselWidth - distanceRight,
+            absDistanceRight = Math.abs(relDistanceRight);
+
+        if (buttonDirection === 'left') {
+            if (Math.floor(relDistanceRight) > 0 && (closestDistance === undefined || absDistanceRight < closestDistance)) {
+                return {
+                    closestDistance: absDistanceRight,
+                    scrollAdjust: scrollPosition - absDistanceRight + _.options.snapOffset,
+                    snapIndex: index
+                };
+            }
+        } else if (buttonDirection === 'right') {
+            if (Math.ceil(relDistanceRight) < 0 && (closestDistance === undefined || absDistanceRight < closestDistance)) {
+                return {
+                    closestDistance: absDistanceLeft,
+                    scrollAdjust: scrollPosition + absDistanceRight + _.options.snapOffset,
+                    snapIndex: index
+                };
+            }
+        } else {
+            if (closestDistance === undefined || closestDistance >= absDistanceRight) {
+                return {
+                    closestDistance: absDistanceRight,
+                    scrollAdjust: scrollPosition - relDistanceRight + _.options.snapOffset,
+                    snapIndex: index
+                };
+            }
         }
     };
 
