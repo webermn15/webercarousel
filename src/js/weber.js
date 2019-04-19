@@ -25,10 +25,11 @@
 	            snapOffset: 0,
 	            snapAlignment: 'center',
 	            snapMargin: 5,
-	            preventEdgeSnapping: true,
-	            animationLength: 250,
+				preventEdgeSnapping: true,
+				buttonType: 'indicator',
 	            fadeObscured: false,
 	            fadeOpacity: 0.5,
+	            animationLength: 250,
 	            debounce: 200
 	        }
 
@@ -62,23 +63,42 @@
 			and positioning them absolutely
 		======
 		*/
-		$('<button/>', {
-			class: "wc__next-button wc__button",
-			text: "next",
-			click: function() {
-				var buttonDirection = 'right';
-				_.scrollHandler(buttonDirection);
-			}
-		}).appendTo(_.$carousel);
-		
-		$('<button/>', {
-			class: "wc__prev-button wc__button",
-			text: "prev",
-			click: function() {
-				var buttonDirection = 'left';
-				_.scrollHandler(buttonDirection);
-			}
-		}).prependTo(_.$carousel);
+		if (_.options.buttonType === 'arrows') {
+			$('<button/>', {
+				class: "wc__next-button wc__button",
+				text: "next",
+				click: function() {
+					var buttonDirection = 'right';
+					_.scrollHandler(buttonDirection);
+				}
+			}).appendTo(_.$carousel);
+			
+			$('<button/>', {
+				class: "wc__prev-button wc__button",
+				text: "prev",
+				click: function() {
+					var buttonDirection = 'left';
+					_.scrollHandler(buttonDirection);
+				}
+			}).prependTo(_.$carousel);
+		}
+		else if (_.options.buttonType === 'indicator') {
+			$('<div/>', {
+				class: "wc__indicator-container"
+			}).appendTo(_.$carousel);
+			_.$carouselItems.each(function(_index, item) {
+				$('<button/>', {
+					class: "wc__indicator-button",
+					text: _index + 1,
+					click: function() {
+						var scrollAdjust = _.childrenLeftBounds[_index];
+						_.$carousel.animate({
+							scrollLeft: scrollAdjust
+						}, _.options.animationLength);
+					}
+				}).appendTo($('.wc__indicator-container'));
+			});
+		}
 
 		_.viewportChangeHandler();
 
