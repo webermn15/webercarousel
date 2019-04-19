@@ -40,3 +40,51 @@
                 display: none;
         }
 }
+
+/*
+= = = 
+car 3 --- FIGURING OUT MINIMUM CSS REQUIREMENTS, WHICH CSS TO DECOUPLE & ALLOW FOR USERS TO PASS THEIR OWN CLASSES
+= = =
+*/
+.car3 {
+        border: 1px solid black;
+        position: relative;
+}
+.car3_carousel {
+        // border: 1px solid white;
+        display: flex;
+        overflow-x: scroll;
+}
+.car3_item {
+        padding: 2rem;
+}
+.car3_item:nth-child(odd) {
+        border: 1px solid palevioletred;
+        min-height: 200px;
+        min-width: 400px;
+}
+.car3_item:nth-child(even) {
+        border: 1px solid palegoldenrod;
+        min-height: 200px;
+        min-width: 400px;
+}
+
+/* button classes */
+.wc__button {
+        background: rgba(0, 0, 0, 0.25);
+        color: white;
+        border: none;
+        font-weight: 700;
+}
+.wc__next-button {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+}
+.wc__prev-button {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+}

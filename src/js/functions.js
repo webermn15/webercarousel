@@ -369,7 +369,7 @@ $(document).ready(function() {
 
     $('.weber-carousel__container').weberCarousel();
 
-
+    $('.car3_carousel').weberCarousel();
 
 
 

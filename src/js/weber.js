@@ -50,7 +50,25 @@
     })();
 
     WeberCarousel.prototype.init = function() {
-    	var _ = this;
+		var _ = this;
+		
+		$('<button/>', {
+			class: "wc__next-button wc__button",
+			text: "next",
+			click: function() {
+				var buttonDirection = 'right';
+				_.scrollHandler(buttonDirection);
+			}
+		}).appendTo(_.$carousel);
+		
+		$('<button/>', {
+			class: "wc__prev-button wc__button",
+			text: "prev",
+			click: function() {
+				var buttonDirection = 'left';
+				_.scrollHandler(buttonDirection);
+			}
+		}).prependTo(_.$carousel);
 
 		_.viewportChangeHandler();
 
@@ -73,10 +91,12 @@
         _.carouselScrollWidth = _.carousel.scrollWidth;
         _.childrenLeftBounds = _.$carouselItems.map(function(_index, child) {
         	return $(child).offset().left + _.$carousel.scrollLeft();
-        }).get();
+		}).get();
+		
+		/* should handle misalignments after resizes at the end of this function */
     };
 
-    WeberCarousel.prototype.scrollHandler = function() {
+    WeberCarousel.prototype.scrollHandler = function(buttonDirection) {
     	var _ = this,
     		scrollPosition = _.$carousel.scrollLeft(),
     		closestDistance,
@@ -98,7 +118,7 @@
     		}
 
     		if (_.options.snapAlignment === 'center') {
-				var centerAlignment = _.alignCenter(_index, item, scrollPosition, distanceLeft, closestDistance);
+				var centerAlignment = _.alignCenter(_index, item, scrollPosition, distanceLeft, closestDistance, buttonDirection);
 				if (!!centerAlignment) {
 					closestDistance = centerAlignment.closestDistance;
 					scrollAdjust = centerAlignment.scrollAdjust;
@@ -106,7 +126,7 @@
 				}
     		}
     		else if (_.options.snapAlignment === 'left') {
-				var leftAlignment = _.alignLeft(_index, item, scrollPosition, distanceLeft, closestDistance);
+				var leftAlignment = _.alignLeft(_index, item, scrollPosition, distanceLeft, closestDistance, buttonDirection);
 				if (!!leftAlignment) {
 					console.log(_index, leftAlignment);
 					closestDistance = leftAlignment.closestDistance;
@@ -115,7 +135,7 @@
 				}
     		}
     		else if (_.options.snapAlignment === 'right') {
-				var rightAlignment = _.alignRight(_index, item, scrollPosition, distanceRight, closestDistance);
+				var rightAlignment = _.alignRight(_index, item, scrollPosition, distanceRight, closestDistance, buttonDirection);
 				if (!!rightAlignment) {
 					closestDistance = rightAlignment.closestDistance;
 					scrollAdjust = rightAlignment.scrollAdjust;
@@ -127,15 +147,11 @@
 		/* need to update indicator button checking here */
 
 		/* prevent all snapping if scroll ends on boundary (enabled by default)*/
-		if (!_.buttonDirection) {
+		if (!buttonDirection) {
 			if (_.options.preventEdgeSnapping && scrollPosition <= 2 || _.options.preventEdgeSnapping && (scrollPosition + _.carouselWidth) >= (_.carouselScrollWidth - 2)) {
 				return false;
 			}
 		}
-
-		// console.log(_.options);
-		// console.log(closestDistance);
-		// console.log(_.options.snapMargin);
 
     	/* check against margin for scroll reposition, animate reposition */
     	if (closestDistance >= _.options.snapMargin) {
@@ -185,7 +201,6 @@
 	WeberCarousel.prototype.alignLeft = function(index, item, scrollPosition, distanceLeft, closestDistance, buttonDirection) {
 		var _ = this,
 			absDistanceLeft = Math.abs(distanceLeft);
-			console.log(absDistanceLeft);
 
 		if (buttonDirection === 'left') {
 			if (Math.ceil(distanceLeft) < 0 && (closestDistance === undefined || absDistanceLeft < closestDistance)) {
