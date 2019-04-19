@@ -5616,9 +5616,19 @@ $(document).ready(function () {
         return WeberCarousel;
     }();
 
+    /* init method, creates & appends buttons/styling/bindings */
     WeberCarousel.prototype.init = function () {
         var _ = this;
 
+        /* 
+        generate buttons and append them to the carousel
+        ======
+        	@notes: position: relative is place on the carousel's container;
+        	i.e. 2 levels removed from the items. so ya probably want to 
+        	ensure that programmatically if im gonna be generating buttons
+        	and positioning them absolutely
+        ======
+        */
         $('<button/>', {
             class: "wc__next-button wc__button",
             text: "next",
@@ -5648,6 +5658,7 @@ $(document).ready(function () {
         _.$carousel.on('scroll', debouncedScrollHandler);
     };
 
+    /* handles carousel dimension changes */
     WeberCarousel.prototype.viewportChangeHandler = function () {
         var _ = this;
 
@@ -5663,6 +5674,7 @@ $(document).ready(function () {
         /* should handle misalignments after resizes at the end of this function */
     };
 
+    /* handles post-scroll functionality; alignment, fading obscured items, animation etc */
     WeberCarousel.prototype.scrollHandler = function (buttonDirection) {
         var _ = this,
             scrollPosition = _.$carousel.scrollLeft(),
@@ -5670,6 +5682,7 @@ $(document).ready(function () {
             scrollAdjust,
             snapIndex;
 
+        /* big looper that calculates item positioning & applies changes accordingly */
         _.$carouselItems.each(function (_index, item) {
             var distanceLeft = $(item).offset().left - _.carouselOffset,
                 distanceRight = distanceLeft + $(item).width();
